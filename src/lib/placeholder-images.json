@@ -1,3 +1,64 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "portfolio-1",
+      "description": "A beautiful wedding ceremony.",
+      "imageUrl": "https://images.unsplash.com/photo-1596457221755-b96bc3a6df18?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc1OTQ1OTk1NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wedding couple"
+    },
+    {
+      "id": "portfolio-2",
+      "description": "A happy couple during their engagement shoot.",
+      "imageUrl": "https://images.unsplash.com/photo-1541089404510-5c9a779841fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjb3VwbGUlMjBzbWlsaW5nfGVufDB8fHx8MTc1OTQxNjkzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "couple smiling"
+    },
+    {
+      "id": "portfolio-3",
+      "description": "A vibrant family portrait.",
+      "imageUrl": "https://images.unsplash.com/photo-1667662200250-a10df4b5eab0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmYW1pbHklMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTk0Mzk4NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "family portrait"
+    },
+    {
+      "id": "portfolio-4",
+      "description": "Candid shot from a birthday party.",
+      "imageUrl": "https://images.unsplash.com/photo-1513151233558-d860c5398176?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmlydGhkYXklMjBwYXJ0eXxlbnwwfHx8fDE3NTk0NjczNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "birthday party"
+    },
+    {
+      "id": "portfolio-5",
+      "description": "Professional corporate headshot.",
+      "imageUrl": "https://images.unsplash.com/photo-1629425733761-caae3b5f2e50?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBoZWFkc2hvdHxlbnwwfHx8fDE3NTk0ODYwMDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional headshot"
+    },
+    {
+      "id": "portfolio-6",
+      "description": "A serene landscape photo.",
+      "imageUrl": "https://images.unsplash.com/photo-1733432754130-acd19bcf62a3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2VyZW5lJTIwbGFuZHNjYXBlfGVufDB8fHx8MTc1OTQ2MjU5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "serene landscape"
+    },
+    {
+      "id": "event-photo-1",
+      "description": "Client photo from a wedding.",
+      "imageUrl": "https://images.unsplash.com/photo-1598625873873-52f9aefd7d9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3b21hbiUyMHNtaWxpbmd8ZW58MHx8fHwxNzU5NDU5NjcyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman smiling"
+    },
+    {
+      "id": "event-photo-2",
+      "description": "Client photo from a wedding.",
+      "imageUrl": "https://images.unsplash.com/photo-1611695434369-a8f5d76ceb7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtYW4lMjBsYXVnaGluZ3xlbnwwfHx8fDE3NTkzOTgzMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man laughing"
+    },
+    {
+      "id": "event-photo-3",
+      "description": "Client photo from a corporate event.",
+      "imageUrl": "https://images.unsplash.com/photo-1532498551838-b7a1cfac622e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxncm91cCUyMHBob3RvfGVufDB8fHx8MTc1OTQ4ODg3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "group photo"
+    },
+    {
+      "id": "event-photo-4",
+      "description": "Client photo from a birthday party.",
+      "imageUrl": "https://images.unsplash.com/photo-1524580477099-d6ef682e2a2c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBkYW5jaW5nfGVufDB8fHx8MTc1OTQ4NzE0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person dancing"
+    }
+  ]
 }
