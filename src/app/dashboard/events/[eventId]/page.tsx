@@ -5,11 +5,13 @@ import Image from 'next/image';
 import { Copy, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Suspense } from 'react';
 
-function EventDetailComponent({ eventId }: { eventId: string }) {
+function EventDetailComponent() {
+  const params = useParams();
+  const eventId = params.eventId as string;
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
@@ -107,10 +109,10 @@ function EventDetailComponent({ eventId }: { eventId: string }) {
   );
 }
 
-export default function EventDetailPage({ params }: { params: { eventId: string } }) {
+export default function EventDetailPage() {
     return (
         <Suspense fallback={<div>Loading event details...</div>}>
-            <EventDetailComponent eventId={params.eventId} />
+            <EventDetailComponent />
         </Suspense>
     )
 }
