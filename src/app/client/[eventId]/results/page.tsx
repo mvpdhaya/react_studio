@@ -19,20 +19,22 @@ function ResultsComponent({ eventId }: { eventId: string }) {
 
   if (photoIds.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
-        <Camera className="h-16 w-16 text-muted-foreground mb-4" />
-        <h1 className="text-2xl font-bold font-headline">No Photos Found</h1>
-        <p className="text-muted-foreground mt-2">We couldn't find any matches for the uploaded selfie.</p>
-        <Button asChild variant="outline" className="mt-6">
-          <Link href={`/client/${eventId}`}>Try Again</Link>
-        </Button>
+      <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4 text-center">
+        <Card className="p-8">
+            <Camera className="h-16 w-16 text-muted-foreground mb-4 mx-auto" />
+            <h1 className="text-2xl font-bold font-headline">No Photos Found</h1>
+            <p className="text-muted-foreground mt-2">We couldn't find any matches for the uploaded selfie.</p>
+            <Button asChild variant="outline" className="mt-6">
+            <Link href={`/client/${eventId}`}>Try Again</Link>
+            </Button>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-muted">
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight font-headline">We Found Your Photos!</h1>
@@ -79,7 +81,7 @@ function ResultsComponent({ eventId }: { eventId: string }) {
 
 export default function ResultsPage({ params }: { params: { eventId: string } }) {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
             <ResultsComponent eventId={params.eventId} />
         </Suspense>
     );

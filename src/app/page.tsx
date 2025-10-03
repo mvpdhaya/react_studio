@@ -15,7 +15,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-24 md:py-40 lg:py-48 xl:py-64 bg-card">
+        <section className="w-full py-24 md:py-32 lg:py-40 bg-card">
           <div className="container px-4 md:px-6">
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="flex flex-col justify-center space-y-6">
@@ -44,7 +44,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-24 md:py-40">
+        <section id="features" className="w-full py-20 md:py-28">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-3">
@@ -56,8 +56,8 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-start gap-12 py-16 lg:grid-cols-3">
-              <div className="grid gap-2 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
+              <div className="grid gap-4 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
                   <Camera className="h-8 w-8" />
                 </div>
                 <h3 className="text-xl font-bold font-headline">1. Create an Event</h3>
@@ -65,8 +65,8 @@ export default function Home() {
                   Studios connect their Google Drive, select a folder of event photos, and generate a unique event page.
                 </p>
               </div>
-              <div className="grid gap-2 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
+              <div className="grid gap-4 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
                   <QrCode className="h-8 w-8" />
                 </div>
                 <h3 className="text-xl font-bold font-headline">2. Share with Clients</h3>
@@ -74,8 +74,8 @@ export default function Home() {
                   Clients access the event page by scanning a simple QR code provided by the studio. No apps, no logins.
                 </p>
               </div>
-              <div className="grid gap-2 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
+              <div className="grid gap-4 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
                   <Sparkles className="h-8 w-8" />
                 </div>
                 <h3 className="text-xl font-bold font-headline">3. Find with AI</h3>
@@ -88,7 +88,7 @@ export default function Home() {
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="w-full py-24 md:py-40 bg-muted">
+        <section id="pricing" className="w-full py-20 md:py-28 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-3">
@@ -175,8 +175,8 @@ export default function Home() {
         </section>
 
         {/* Portfolio Section */}
-        <section className="w-full py-24 md:py-40 bg-card">
-          <div className="container grid items-center justify-center gap-6 px-4 text-center md:px-6">
+        <section className="w-full py-20 md:py-28 bg-card">
+          <div className="container grid items-center justify-center gap-8 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">Our Work</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -203,7 +203,7 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="w-full py-24 md:py-40">
+        <section id="about" className="w-full py-20 md:py-28">
           <div className="container px-4 md:px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="space-y-4">

@@ -86,7 +86,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">Find Your Photos</CardTitle>
@@ -103,7 +103,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
                   ) : (
                     <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
                   )}
-                  <div className="flex text-sm text-muted-foreground justify-center">
+                  <div className="flex text-sm text-muted-foreground justify-center pt-2">
                     <label
                       htmlFor="selfie-upload"
                       className="relative cursor-pointer rounded-md bg-transparent font-medium text-primary focus-within:outline-none hover:text-primary/80"
