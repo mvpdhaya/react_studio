@@ -9,12 +9,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Suspense } from 'react';
 
 function EventDetailComponent({ params }: { params: { eventId: string } }) {
+  const { eventId } = params;
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
   // The backend doesn't store the event name, so we pass it from the create page.
-  const eventName = searchParams.get('name') || `Event ${params.eventId}`;
-  const clientUrl = `${window.location.origin}/client/${params.eventId}`;
+  const eventName = searchParams.get('name') || `Event ${eventId}`;
+  const clientUrl = `${window.location.origin}/client/${eventId}`;
   const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(clientUrl)}&color=008080&bgcolor=F0F0F0`;
 
   const handleCopy = async (textToCopy: string) => {
@@ -35,7 +36,7 @@ function EventDetailComponent({ params }: { params: { eventId: string } }) {
   const handleDownloadQR = () => {
     const link = document.createElement('a');
     link.href = qrCodeUrl;
-    link.download = `studiomatch-qr-${params.eventId}.png`;
+    link.download = `studiomatch-qr-${eventId}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
