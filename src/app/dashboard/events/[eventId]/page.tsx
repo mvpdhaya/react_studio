@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Copy, Download, Link as LinkIcon, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { useSearchParams, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Suspense, useState, useEffect } from 'react';
