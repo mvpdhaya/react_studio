@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Header } from '@/components/header';
@@ -6,9 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Camera, QrCode, Sparkles, Check } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const portfolioImages = PlaceHolderImages.filter(img => img.id.startsWith('portfolio-')).slice(0, 6);
+  const [portfolioImages, setPortfolioImages] = useState<typeof PlaceHolderImages>([]);
+
+  useEffect(() => {
+    setPortfolioImages(PlaceHolderImages.filter(img => img.id.startsWith('portfolio-')).slice(0, 6));
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -46,7 +53,7 @@ export default function Home() {
         {/* Features Section */}
         <section id="features" className="w-full py-20 md:py-28">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
               <div className="space-y-3">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">How It Works</h2>
@@ -55,7 +62,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-12 py-16 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-5xl items-start gap-12 lg:grid-cols-3">
               <div className="grid gap-4 text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
                   <Camera className="h-8 w-8" />
@@ -99,7 +106,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-4xl items-start gap-8 py-16 md:grid-cols-2">
+            <div className="mx-auto grid max-w-4xl items-stretch gap-8 py-16 md:grid-cols-2">
               <Card className="flex flex-col">
                 <CardHeader>
                   <CardTitle className="font-headline text-2xl">Pay Per Event</CardTitle>
@@ -135,7 +142,7 @@ export default function Home() {
                   </Button>
                 </CardFooter>
               </Card>
-              <Card className="flex flex-col border-primary">
+              <Card className="flex flex-col border-primary shadow-lg">
                 <CardHeader>
                   <CardTitle className="font-headline text-2xl">Monthly Plan</CardTitle>
                   <CardDescription>Best value for busy studios with multiple events.</CardDescription>
@@ -185,7 +192,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {portfolioImages.map((image) => (
-                <Card key={image.id} className="overflow-hidden">
+                <Card key={image.id} className="overflow-hidden group">
                   <CardContent className="p-0">
                     <Image
                       src={image.imageUrl}
@@ -193,7 +200,7 @@ export default function Home() {
                       data-ai-hint={image.imageHint}
                       width={800}
                       height={600}
-                      className="aspect-[4/3] w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                     />
                   </CardContent>
                 </Card>
@@ -205,17 +212,8 @@ export default function Home() {
         {/* About Section */}
         <section id="about" className="w-full py-20 md:py-28">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">About StudioMatch</h2>
-                <p className="text-muted-foreground">
-                  StudioMatch was born from a simple idea: finding your photos should be as joyful as the moment they were taken. For too long, clients have had to scroll through endless galleries, and studios have spent hours searching for specific shots.
-                </p>
-                <p className="mt-4 text-muted-foreground">
-                  We bridge this gap with powerful, user-friendly AI. Our platform empowers photography studios to provide an exceptional, modern service that clients will love. We handle the tech, so you can focus on what you do best: creating beautiful images.
-                </p>
-              </div>
-              <div className="flex items-center justify-center">
+            <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+               <div className="flex items-center justify-center">
                  <Image
                     src={portfolioImages[1]?.imageUrl || "https://picsum.photos/seed/about/800/800"}
                     alt="About Us"
@@ -224,6 +222,15 @@ export default function Home() {
                     height={800}
                     className="mx-auto aspect-square overflow-hidden rounded-xl object-cover"
                   />
+              </div>
+              <div className="space-y-4">
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">About StudioMatch</h2>
+                <p className="text-muted-foreground">
+                  StudioMatch was born from a simple idea: finding your photos should be as joyful as the moment they were taken. For too long, clients have had to scroll through endless galleries, and studios have spent hours searching for specific shots.
+                </p>
+                <p className="mt-4 text-muted-foreground">
+                  We bridge this gap with powerful, user-friendly AI. Our platform empowers photography studios to provide an exceptional, modern service that clients will love. We handle the tech, so you can focus on what you do best: creating beautiful images.
+                </p>
               </div>
             </div>
           </div>
