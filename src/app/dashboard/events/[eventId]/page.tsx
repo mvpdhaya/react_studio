@@ -2,7 +2,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Copy, Download } from 'lucide-react';
+import { Copy, Download, Link as LinkIcon, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSearchParams, useParams } from 'next/navigation';
@@ -18,14 +18,13 @@ function EventDetailComponent() {
   const [clientUrl, setClientUrl] = useState('');
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
-  // The backend doesn't store the event name, so we pass it from the create page.
-  const eventName = searchParams.get('name') || `Event ${eventId}`;
+  const eventName = searchParams.get('name') || `Event Details`;
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const url = `${window.location.origin}/client/${eventId}`;
       setClientUrl(url);
-      setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=008080&bgcolor=F0F0F0`);
+      setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}`);
     }
   }, [eventId]);
 
@@ -49,75 +48,113 @@ function EventDetailComponent() {
   const handleDownloadQR = () => {
     if (!qrCodeUrl) return;
     const link = document.createElement('a');
-    link.href = qrCodeUrl;
-    link.download = `studiomatch-qr-${eventId}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-     toast({
-        title: "QR Code downloading...",
+    // The QR server doesn't provide a direct download with custom names, so we fetch and create a blob
+    fetch(qrCodeUrl)
+      .then(res => res.blob())
+      .then(blob => {
+          const objectUrl = URL.createObjectURL(blob);
+          link.href = objectUrl;
+          link.download = `studiomatch-qr-${eventId}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(objectUrl);
+          toast({
+            title: "QR Code downloading...",
+          });
+      })
+      .catch(() => {
+           toast({
+            variant: "destructive",
+            title: "Failed to download QR",
+            description: "Could not download the QR code image.",
+        });
       });
   };
 
+  const statCards = [
+      { title: 'Photos in Album', value: '1,283', icon: BarChart3 },
+      { title: 'Selfies Uploaded', value: '342', icon: BarChart3 },
+      { title: 'Photos Matched', value: '98%', icon: BarChart3 },
+      { title: 'Downloads', value: '781', icon: BarChart3 }
+  ]
+
 
   return (
-    <div>
-      <h1 className="text-3xl font-headline font-bold mb-4">{eventName}</h1>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex flex-col gap-8">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tighter font-headline mb-1">{eventName}</h1>
+        <p className="text-muted-foreground">Here's how your event is performing.</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {statCards.map(stat => (
+            <Card key={stat.title}>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                    <stat.icon className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{stat.value}</div>
+                </CardContent>
+            </Card>
+        ))}
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Event Statistics</CardTitle>
-            <CardDescription>Overview of client engagement. (Stats are placeholders)</CardDescription>
+            <CardTitle>Client Link & QR Code</CardTitle>
+            <CardDescription>Share this with your event attendees to let them find their photos.</CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-2 gap-6">
-            <div className="flex flex-col space-y-1.5">
-              <p className="text-sm text-muted-foreground">Photos in Album</p>
-              <p className="text-2xl font-semibold">--</p>
+          <CardContent className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="flex flex-col items-center gap-4 p-6 bg-muted rounded-lg">
+                {qrCodeUrl ? (
+                <div className="p-4 bg-white rounded-lg border-2 shadow-md">
+                    <Image
+                    src={qrCodeUrl}
+                    alt="Event QR Code"
+                    width={200}
+                    height={200}
+                    unoptimized
+                    />
+                </div>
+                ) : (
+                    <div className="w-[216px] h-[216px] bg-gray-200 rounded-lg animate-pulse" />
+                )}
+                 <Button variant="default" size="lg" onClick={handleDownloadQR} disabled={!qrCodeUrl} className="w-full">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download QR Code
+                </Button>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <p className="text-sm text-muted-foreground">Selfies Uploaded</p>
-              <p className="text-2xl font-semibold">--</p>
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <p className="text-sm text-muted-foreground">Photos Matched</p>
-              <p className="text-2xl font-semibold">--</p>
-            </div>
-             <div className="flex flex-col space-y-1.5">
-              <p className="text-sm text-muted-foreground">Downloads</p>
-              <p className="text-2xl font-semibold">--</p>
+            <div className="space-y-4">
+                <h3 className="font-semibold">Shareable Link</h3>
+                <div className="flex gap-2">
+                    <Input value={clientUrl} readOnly className="bg-muted"/>
+                    <Button variant="outline" size="icon" onClick={() => handleCopy(clientUrl)} disabled={!clientUrl}>
+                        <Copy className="h-4 w-4" />
+                        <span className="sr-only">Copy Link</span>
+                    </Button>
+                </div>
+                <Button variant="outline" asChild>
+                    <a href={clientUrl} target="_blank" rel="noopener noreferrer">
+                        <LinkIcon className="mr-2 h-4 w-4"/>
+                        Open Client Page
+                    </a>
+                </Button>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Share with Clients</CardTitle>
-            <CardDescription>Clients can scan this QR code to find their photos.</CardDescription>
+            <CardTitle>Event Actions</CardTitle>
+            <CardDescription>Manage your event settings and data.</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col items-center gap-4">
-            {qrCodeUrl ? (
-              <div className="p-4 bg-white rounded-lg border">
-                  <Image
-                  src={qrCodeUrl}
-                  alt="Event QR Code"
-                  width={200}
-                  height={200}
-                  unoptimized
-                  />
-              </div>
-            ) : (
-                <div className="w-[200px] h-[200px] bg-muted rounded-lg animate-pulse" />
-            )}
-            <div className="flex gap-2">
-                 <Button variant="outline" size="sm" onClick={() => handleCopy(clientUrl)} disabled={!clientUrl}>
-                    <Copy className="mr-2 h-4 w-4" />
-                    Copy Link
-                </Button>
-                <Button variant="outline" size="sm" onClick={handleDownloadQR} disabled={!qrCodeUrl}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download QR
-                </Button>
-            </div>
+          <CardContent className="flex flex-col gap-3">
+             <Button variant="outline">View Drive Folder</Button>
+             <Button variant="outline">Re-index Photos</Button>
+             <Button variant="destructive">Delete Event</Button>
           </CardContent>
         </Card>
       </div>

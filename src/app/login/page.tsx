@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/logo';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { GoogleDriveLogo } from '@/components/google-drive-logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -67,19 +68,19 @@ export default function LoginPage() {
 
   if (isUserLoading || (!isUserLoading && user)) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-16 w-16 animate-spin" />
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Loader2 className="h-16 w-16 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted">
-      <Card className="mx-auto max-w-sm w-full">
+    <div className="flex items-center justify-center min-h-screen bg-background p-4">
+      <Card className="mx-auto max-w-sm w-full shadow-2xl">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center pb-4"><Logo /></div>
-          <CardTitle className="text-2xl font-bold font-headline">Studio Login</CardTitle>
-          <CardDescription>Enter your email below to login to your account</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight">Studio Login</CardTitle>
+          <CardDescription>Enter your email to sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignIn} className="space-y-4">
@@ -96,9 +97,7 @@ export default function LoginPage() {
               />
             </div>
             <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input 
                 id="password" 
                 type="password" 
@@ -110,7 +109,7 @@ export default function LoginPage() {
             </div>
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Login
+              Sign In
             </Button>
           </form>
           <div className="relative my-4">
@@ -118,18 +117,18 @@ export default function LoginPage() {
               <span className="w-full border-t" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
+              <span className="bg-card px-2 text-muted-foreground">
                 Or continue with
               </span>
             </div>
           </div>
           <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isLoading}>
-             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Login with Google
+             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 76.2c-23.1-21.9-58.6-35.8-96.7-35.8-82.8 0-150.2 67.2-150.2 150.2s67.4 150.2 150.2 150.2c94.2 0 135.3-63.5 140.8-95.2H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>}
+            Sign in with Google
           </Button>
           <div className="mt-6 text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link href="#" className="underline text-primary">
+            <Link href="#" className="underline text-primary hover:text-primary/80">
               Sign up
             </Link>
           </div>

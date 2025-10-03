@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-
+import { findPhotos } from '@/ai/flows/client-upload-selfie-find-photos';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -17,7 +17,6 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -33,7 +32,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!file) {
+    if (!preview) {
       toast({
         variant: 'destructive',
         title: 'No file selected',
@@ -44,23 +43,13 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
 
     setIsLoading(true);
 
-    const formData = new FormData();
-    formData.append('event_id', params.eventId);
-    formData.append('selfie', file);
-
     try {
-      const response = await fetch(`${backendApiUrl}/process_selfie`, {
-        method: 'POST',
-        body: formData,
+      const result = await findPhotos({
+        selfieDataUri: preview,
+        eventId: params.eventId,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to process selfie');
-      }
-
-      const result = await response.json();
-      const fileIds = result.matches.map((match: any) => match.file_id);
+      const fileIds = result.fileIds;
 
       if (fileIds && fileIds.length > 0) {
         const query = new URLSearchParams({
@@ -70,7 +59,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
       } else {
         toast({
           title: 'No matches found',
-          description: 'We couldn\'t find any photos of you from this event.',
+          description: "We couldn't find any photos of you from this event.",
         });
         setIsLoading(false);
       }
@@ -86,24 +75,26 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-md">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4 sm:px-6 lg:px-8">
+      <Card className="w-full max-w-md shadow-2xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-headline">Find Your Photos</CardTitle>
+          <CardTitle className="text-3xl font-bold tracking-tighter font-headline">Find Your Photos</CardTitle>
           <CardDescription>Upload a clear selfie to find all your pictures from the event.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="selfie-upload" className="sr-only">Upload Selfie</Label>
-              <div className="flex justify-center rounded-md border-2 border-dashed border-border p-6">
+              <div className="flex justify-center rounded-lg border-2 border-dashed border-border p-6 hover:border-primary/50 transition-colors">
                 <div className="space-y-1 text-center">
                   {preview ? (
-                     <Image src={preview} alt="Selfie preview" width={128} height={128} className="mx-auto h-32 w-32 rounded-full object-cover border" />
+                     <Image src={preview} alt="Selfie preview" width={128} height={128} className="mx-auto h-32 w-32 rounded-full object-cover border-2 border-primary/20 shadow-md" />
                   ) : (
-                    <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
+                    <div className="flex items-center justify-center h-32 w-32 rounded-full bg-muted mx-auto border-2 border-dashed">
+                      <UploadCloud className="h-12 w-12 text-muted-foreground" />
+                    </div>
                   )}
-                  <div className="flex text-sm text-muted-foreground justify-center pt-2">
+                  <div className="flex text-sm text-muted-foreground justify-center pt-4">
                     <label
                       htmlFor="selfie-upload"
                       className="relative cursor-pointer rounded-md bg-transparent font-medium text-primary focus-within:outline-none hover:text-primary/80"
@@ -117,7 +108,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
                 </div>
               </div>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading || !file}>
+            <Button type="submit" className="w-full !mt-8" size="lg" disabled={isLoading || !file}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
