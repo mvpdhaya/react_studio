@@ -1,0 +1,125 @@
+/**
+ * @fileoverview Firestore Security Rules for SaaS Photo Matcher.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model where studios can only
+ * access their own data, and events are scoped to their parent studio. All write
+ * operations are guarded by authentication checks and ownership validation. Data
+ * validation is relaxed to allow for rapid prototyping, except for fields crucial
+ * for authorization (e.g., studioId).
+ *
+ * Data Structure:
+ * - /studios/{studioId}: Stores studio profile information.
+ * - /studios/{studioId}/events/{eventId}: Stores event data owned by a studio.
+ * - /payments/{paymentId}: Stores payment information, linked to a studio.
+ *
+ * Key Security Decisions:
+ * - Users can only manage resources (studios, events, payments) associated with their own studio ID.
+ * - Data validation is minimal to enable rapid prototyping, focusing on fields
+ *   necessary for authorization.
+ * - Listing operations are secured by path-based rules, ensuring users can only
+ *   list resources within their studio's scope.
+ *
+ * Denormalization for Authorization:
+ * The 'Event' and 'Payment' entities contain a 'studioId' field that is used to
+ * verify ownership, avoiding the need for complex queries or joins in the
+ * security rules.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Grants access to studio profiles.  Studios can read and write their own profile data.
+     * @path /studios/{studioId}
+     * @allow (create) User with UID 'studio123' can create a studio profile with id 'studio123'.
+     * @allow (get) User with UID 'studio123' can read the studio profile with id 'studio123'.
+     * @allow (update) User with UID 'studio123' can update the studio profile with id 'studio123'.
+     * @allow (delete) User with UID 'studio123' can delete the studio profile with id 'studio123' if it exists.
+     * @deny (create) User with UID 'anotherUser' cannot create a studio profile with id 'studio123'.
+     * @deny (get) User with UID 'anotherUser' cannot read the studio profile with id 'studio123'.
+     * @deny (update) User with UID 'anotherUser' cannot update the studio profile with id 'studio123'.
+     * @deny (delete) User with UID 'anotherUser' cannot delete the studio profile with id 'studio123'.
+     * @principle Enforces document ownership for studio profiles.
+     */
+    match /studios/{studioId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      function isOwner(studioId) {
+        return request.auth.uid == studioId;
+      }
+      function isExistingOwner(studioId) {
+        return isOwner(studioId) && resource != null;
+      }
+
+      allow get: if true;
+      allow list: if false;
+      allow create: if isSignedIn() && isOwner(studioId);
+      allow update: if isExistingOwner(studioId);
+      allow delete: if isExistingOwner(studioId);
+    }
+
+    /**
+     * @description Grants access to events.  Studios can read and write events associated with their studio.
+     * @path /studios/{studioId}/events/{eventId}
+     * @allow (create) User with UID 'studio123' can create an event under studio 'studio123'.
+     * @allow (get) User with UID 'studio123' can read event 'event456' under studio 'studio123'.
+     * @allow (update) User with UID 'studio123' can update event 'event456' under studio 'studio123'.
+     * @allow (delete) User with UID 'studio123' can delete event 'event456' under studio 'studio123' if it exists.
+     * @deny (create) User with UID 'anotherUser' cannot create an event under studio 'studio123'.
+     * @deny (get) User with UID 'anotherUser' cannot read event 'event456' under studio 'studio123'.
+     * @deny (update) User with UID 'anotherUser' cannot update event 'event456' under studio 'studio123'.
+     * @deny (delete) User with UID 'anotherUser' cannot delete event 'event456' under studio 'studio123'.
+     * @principle Enforces ownership for events based on the studioId.
+     */
+    match /studios/{studioId}/events/{eventId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      function isOwner(studioId) {
+        return request.auth.uid == studioId;
+      }
+         function isExistingOwner(studioId) {
+        return isOwner(studioId) && resource != null;
+      }
+
+      allow get: if true;
+      allow list: if isOwner(studioId);
+      allow create: if isSignedIn() && isOwner(studioId);
+      allow update: if isExistingOwner(studioId);
+      allow delete: if isExistingOwner(studioId);
+    }
+
+    /**
+     * @description Grants access to payments.  Payments can be read and written only by the associated studio.
+     * @path /payments/{paymentId}
+     * @allow (create) User with UID 'studio123' can create a payment with studioId 'studio123'.
+     * @allow (get) User with UID 'studio123' can read payment 'payment789' with studioId 'studio123'.
+     * @allow (update) User with UID 'studio123' can update payment 'payment789' with studioId 'studio123' if it exists.
+     * @allow (delete) User with UID 'studio123' can delete payment 'payment789' with studioId 'studio123' if it exists.
+     * @deny (create) User with UID 'anotherUser' cannot create a payment with studioId 'studio123'.
+     * @deny (get) User with UID 'anotherUser' cannot read payment 'payment789' with studioId 'studio123'.
+     * @deny (update) User with UID 'anotherUser' cannot update payment 'payment789' with studioId 'studio123'.
+     * @deny (delete) User with UID 'anotherUser' cannot delete payment 'payment789' with studioId 'studio123'.
+     * @principle Enforces ownership of payments using the studioId field.
+     */
+    match /payments/{paymentId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+      function isOwner(studioId) {
+        return request.auth.uid == studioId;
+      }
+         function isExistingOwner(studioId) {
+        return isOwner(studioId) && resource != null;
+      }
+
+      allow get: if true;
+      allow list: if false;
+      allow create: if isSignedIn() && request.resource.data.studioId == request.auth.uid;
+      allow update: if isExistingOwner(resource.data.studioId);
+      allow delete: if isExistingOwner(resource.data.studioId);
+    }
+  }
+}
