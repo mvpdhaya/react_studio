@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Camera, QrCode, Sparkles } from 'lucide-react';
+import { Camera, QrCode, Sparkles, Check } from 'lucide-react';
 
 export default function Home() {
   const portfolioImages = PlaceHolderImages.filter(img => img.id.startsWith('portfolio-')).slice(0, 6);
@@ -15,7 +15,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-20 md:py-32 lg:py-40 xl:py-56 bg-card">
+        <section className="w-full py-24 md:py-40 lg:py-48 xl:py-64 bg-card">
           <div className="container px-4 md:px-6">
             <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
               <div className="flex flex-col justify-center space-y-6">
@@ -44,7 +44,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-20 md:py-32">
+        <section id="features" className="w-full py-24 md:py-40">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-3">
@@ -87,8 +87,95 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Pricing Section */}
+        <section id="pricing" className="w-full py-24 md:py-40 bg-muted">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-3">
+                <div className="inline-block rounded-lg bg-background px-3 py-1 text-sm">Pricing</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">Flexible Pricing for Every Studio</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Choose a plan that works for you. Cancel anytime.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-4xl items-start gap-8 py-16 md:grid-cols-2">
+              <Card className="flex flex-col">
+                <CardHeader>
+                  <CardTitle className="font-headline text-2xl">Pay Per Event</CardTitle>
+                  <CardDescription>Perfect for one-off events or trying out our service.</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold">$29</span>
+                    <span className="text-muted-foreground">/ event</span>
+                  </div>
+                  <ul className="mt-6 space-y-3">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>Single Event</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>Up to 2,000 photos</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>AI-powered photo matching</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>QR code and event link</span>
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full" variant="outline">
+                    <Link href="/login">Get Started</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+              <Card className="flex flex-col border-primary">
+                <CardHeader>
+                  <CardTitle className="font-headline text-2xl">Monthly Plan</CardTitle>
+                  <CardDescription>Best value for busy studios with multiple events.</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold">$99</span>
+                    <span className="text-muted-foreground">/ month</span>
+                  </div>
+                  <ul className="mt-6 space-y-3">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>Unlimited Events</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>Unlimited Photos</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>AI-powered photo matching</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-5 w-5 text-primary" />
+                      <span>Priority Support</span>
+                    </li>
+                  </ul>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full" variant="accent">
+                    <Link href="/login">Choose Plan</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* Portfolio Section */}
-        <section className="w-full py-20 md:py-32 bg-card">
+        <section className="w-full py-24 md:py-40 bg-card">
           <div className="container grid items-center justify-center gap-6 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">Our Work</h2>
@@ -116,7 +203,7 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="w-full py-20 md:py-32">
+        <section id="about" className="w-full py-24 md:py-40">
           <div className="container px-4 md:px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="space-y-4">

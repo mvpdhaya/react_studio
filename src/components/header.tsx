@@ -19,6 +19,12 @@ export function Header() {
             Features
           </Link>
           <Link
+            href="/#pricing"
+            className="transition-colors hover:text-foreground/80 text-foreground/60"
+          >
+            Pricing
+          </Link>
+          <Link
             href="/#about"
             className="transition-colors hover:text-foreground/80 text-foreground/60"
           >
