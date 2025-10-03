@@ -6,12 +6,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <div className="mr-6 flex items-center">
-          <Link href="/">
+        <div className="flex-none">
+           <Link href="/" className="mr-6">
             <Logo />
           </Link>
         </div>
-        <nav className="flex flex-1 items-center justify-start gap-6 text-sm">
+        <nav className="flex flex-1 items-center justify-center gap-6 text-sm">
           <Link
             href="/#features"
             className="hidden sm:inline-block transition-colors hover:text-foreground/80 text-foreground/60"
@@ -31,7 +31,7 @@ export function Header() {
             About
           </Link>
         </nav>
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex flex-none items-center justify-end gap-4">
           <Button variant="ghost" asChild>
             <Link href="/login">Log In</Link>
           </Button>

@@ -24,7 +24,7 @@ export default function Home() {
         {/* Hero Section */}
         <section className="w-full py-24 md:py-32 lg:py-40 bg-card">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
+            <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
               <div className="flex flex-col justify-center space-y-6">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-primary">
                   Never lose a memory.
@@ -45,13 +45,14 @@ export default function Home() {
                 width={1200}
                 height={800}
                 className="mx-auto aspect-[3/2] overflow-hidden rounded-xl object-cover sm:w-full"
+                priority
               />
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-20 md:py-28">
+        <section id="features" className="w-full py-20 md:py-28 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-16">
               <div className="space-y-3">
@@ -62,40 +63,76 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-12 lg:grid-cols-3">
-              <div className="grid gap-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
-                  <Camera className="h-8 w-8" />
+            <div className="mx-auto grid max-w-5xl items-center gap-y-16">
+                <div className="grid gap-10 md:grid-cols-2 md:items-center">
+                    <Image
+                        src="https://picsum.photos/seed/feature1/800/600"
+                        alt="Create Event"
+                        data-ai-hint="photographer laptop"
+                        width={800}
+                        height={600}
+                        className="mx-auto aspect-[4/3] overflow-hidden rounded-xl object-cover"
+                    />
+                    <div className="space-y-4">
+                         <div className="flex items-center gap-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                <Camera className="h-6 w-6" />
+                            </div>
+                            <h3 className="text-2xl font-bold font-headline">1. Create an Event</h3>
+                        </div>
+                        <p className="text-muted-foreground md:text-lg">
+                        Studios connect their Google Drive, select a folder of event photos, and generate a unique event page with a shareable QR code.
+                        </p>
+                    </div>
                 </div>
-                <h3 className="text-xl font-bold font-headline">1. Create an Event</h3>
-                <p className="text-muted-foreground">
-                  Studios connect their Google Drive, select a folder of event photos, and generate a unique event page.
-                </p>
-              </div>
-              <div className="grid gap-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
-                  <QrCode className="h-8 w-8" />
+                 <div className="grid gap-10 md:grid-cols-2 md:items-center">
+                    <div className="space-y-4 md:order-last">
+                         <div className="flex items-center gap-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                <QrCode className="h-6 w-6" />
+                            </div>
+                            <h3 className="text-2xl font-bold font-headline">2. Share with Clients</h3>
+                        </div>
+                        <p className="text-muted-foreground md:text-lg">
+                        Clients access the event page by scanning a simple QR code provided by the studio. No apps, no logins, just instant access.
+                        </p>
+                    </div>
+                    <Image
+                        src="https://picsum.photos/seed/feature2/800/600"
+                        alt="Share QR Code"
+                        data-ai-hint="phone qr code"
+                        width={800}
+                        height={600}
+                        className="mx-auto aspect-[4/3] overflow-hidden rounded-xl object-cover"
+                    />
                 </div>
-                <h3 className="text-xl font-bold font-headline">2. Share with Clients</h3>
-                <p className="text-muted-foreground">
-                  Clients access the event page by scanning a simple QR code provided by the studio. No apps, no logins.
-                </p>
-              </div>
-              <div className="grid gap-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-2">
-                  <Sparkles className="h-8 w-8" />
+                 <div className="grid gap-10 md:grid-cols-2 md:items-center">
+                    <Image
+                        src="https://picsum.photos/seed/feature3/800/600"
+                        alt="Find with AI"
+                        data-ai-hint="woman phone selfie"
+                        width={800}
+                        height={600}
+                        className="mx-auto aspect-[4/3] overflow-hidden rounded-xl object-cover"
+                    />
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                <Sparkles className="h-6 w-6" />
+                            </div>
+                            <h3 className="text-2xl font-bold font-headline">3. Find with AI</h3>
+                        </div>
+                        <p className="text-muted-foreground md:text-lg">
+                        Clients upload a selfie, and our AI instantly finds and displays all their photos from the event for easy viewing and downloading.
+                        </p>
+                    </div>
                 </div>
-                <h3 className="text-xl font-bold font-headline">3. Find with AI</h3>
-                <p className="text-muted-foreground">
-                  Clients upload a selfie, and our AI instantly finds and displays all their photos from the event.
-                </p>
-              </div>
             </div>
           </div>
         </section>
 
         {/* Pricing Section */}
-        <section id="pricing" className="w-full py-20 md:py-28 bg-muted">
+        <section id="pricing" className="w-full py-20 md:py-28 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-3">
@@ -108,7 +145,7 @@ export default function Home() {
             </div>
             <div className="mx-auto grid max-w-4xl items-stretch gap-8 py-16 md:grid-cols-2">
               <Card className="flex flex-col">
-                <CardHeader>
+                <CardHeader className="pb-4">
                   <CardTitle className="font-headline text-2xl">Pay Per Event</CardTitle>
                   <CardDescription>Perfect for one-off events or trying out our service.</CardDescription>
                 </CardHeader>
@@ -117,7 +154,7 @@ export default function Home() {
                     <span className="text-4xl font-bold">$29</span>
                     <span className="text-muted-foreground">/ event</span>
                   </div>
-                  <ul className="mt-6 space-y-3">
+                  <ul className="mt-6 space-y-3 text-sm">
                     <li className="flex items-center gap-2">
                       <Check className="h-5 w-5 text-primary" />
                       <span>Single Event</span>
@@ -143,7 +180,7 @@ export default function Home() {
                 </CardFooter>
               </Card>
               <Card className="flex flex-col border-primary shadow-lg">
-                <CardHeader>
+                <CardHeader className="pb-4">
                   <CardTitle className="font-headline text-2xl">Monthly Plan</CardTitle>
                   <CardDescription>Best value for busy studios with multiple events.</CardDescription>
                 </CardHeader>
@@ -152,7 +189,7 @@ export default function Home() {
                     <span className="text-4xl font-bold">$99</span>
                     <span className="text-muted-foreground">/ month</span>
                   </div>
-                  <ul className="mt-6 space-y-3">
+                  <ul className="mt-6 space-y-3 text-sm">
                     <li className="flex items-center gap-2">
                       <Check className="h-5 w-5 text-primary" />
                       <span>Unlimited Events</span>
@@ -182,7 +219,7 @@ export default function Home() {
         </section>
 
         {/* Portfolio Section */}
-        <section className="w-full py-20 md:py-28 bg-card">
+        <section className="w-full py-20 md:py-28 lg:py-32 bg-card">
           <div className="container grid items-center justify-center gap-8 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">Our Work</h2>
@@ -210,10 +247,20 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="w-full py-20 md:py-28">
+        <section id="about" className="w-full py-20 md:py-28 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
-               <div className="flex items-center justify-center">
+               <div className="space-y-4">
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">About Us</div>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">About StudioMatch</h2>
+                <p className="text-muted-foreground md:text-lg">
+                  StudioMatch was born from a simple idea: finding your photos should be as joyful as the moment they were taken. For too long, clients have had to scroll through endless galleries, and studios have spent hours searching for specific shots.
+                </p>
+                <p className="mt-4 text-muted-foreground md:text-lg">
+                  We bridge this gap with powerful, user-friendly AI. Our platform empowers photography studios to provide an exceptional, modern service that clients will love. We handle the tech, so you can focus on what you do best: creating beautiful images.
+                </p>
+              </div>
+              <div className="flex items-center justify-center">
                  <Image
                     src={portfolioImages[1]?.imageUrl || "https://picsum.photos/seed/about/800/800"}
                     alt="About Us"
@@ -222,15 +269,6 @@ export default function Home() {
                     height={800}
                     className="mx-auto aspect-square overflow-hidden rounded-xl object-cover"
                   />
-              </div>
-              <div className="space-y-4">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">About StudioMatch</h2>
-                <p className="text-muted-foreground">
-                  StudioMatch was born from a simple idea: finding your photos should be as joyful as the moment they were taken. For too long, clients have had to scroll through endless galleries, and studios have spent hours searching for specific shots.
-                </p>
-                <p className="mt-4 text-muted-foreground">
-                  We bridge this gap with powerful, user-friendly AI. Our platform empowers photography studios to provide an exceptional, modern service that clients will love. We handle the tech, so you can focus on what you do best: creating beautiful images.
-                </p>
               </div>
             </div>
           </div>

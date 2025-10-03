@@ -34,7 +34,7 @@ function ResultsComponent({ eventId }: { eventId: string }) {
 
   return (
     <div className="min-h-screen bg-muted">
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight font-headline">We Found Your Photos!</h1>

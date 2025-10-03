@@ -86,7 +86,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-muted p-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">Find Your Photos</CardTitle>
@@ -96,7 +96,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="selfie-upload" className="sr-only">Upload Selfie</Label>
-              <div className="flex justify-center rounded-md border-2 border-dashed border-border px-6 pt-5 pb-6">
+              <div className="flex justify-center rounded-md border-2 border-dashed border-border p-6">
                 <div className="space-y-1 text-center">
                   {preview ? (
                      <Image src={preview} alt="Selfie preview" width={128} height={128} className="mx-auto h-32 w-32 rounded-full object-cover border" />
