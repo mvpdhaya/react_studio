@@ -12,7 +12,6 @@ import { Label } from '@/components/ui/label';
 import { Logo } from '@/components/logo';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { GoogleDriveLogo } from '@/components/google-drive-logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,6 +22,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   useEffect(() => {
     if (!isUserLoading && user) {
@@ -49,7 +49,7 @@ export default function LoginPage() {
   };
 
   const handleGoogleSignIn = async () => {
-    setIsLoading(true);
+    setIsGoogleLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
@@ -62,7 +62,7 @@ export default function LoginPage() {
         description: error.message,
       });
     } finally {
-      setIsLoading(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -79,7 +79,7 @@ export default function LoginPage() {
       <Card className="mx-auto max-w-sm w-full shadow-2xl">
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center pb-4"><Logo /></div>
-          <CardTitle className="text-2xl font-bold tracking-tight">Studio Login</CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight font-headline">Studio Login</CardTitle>
           <CardDescription>Enter your email to sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 required 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled={isLoading}
+                disabled={isLoading || isGoogleLoading}
               />
             </div>
             <div className="space-y-2">
@@ -104,10 +104,10 @@ export default function LoginPage() {
                 required 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                disabled={isLoading}
+                disabled={isLoading || isGoogleLoading}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full" disabled={isLoading || isGoogleLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign In
             </Button>
@@ -122,13 +122,13 @@ export default function LoginPage() {
               </span>
             </div>
           </div>
-          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isLoading}>
-             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 76.2c-23.1-21.9-58.6-35.8-96.7-35.8-82.8 0-150.2 67.2-150.2 150.2s67.4 150.2 150.2 150.2c94.2 0 135.3-63.5 140.8-95.2H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>}
+          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isLoading || isGoogleLoading}>
+             {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 76.2c-23.1-21.9-58.6-35.8-96.7-35.8-82.8 0-150.2 67.2-150.2 150.2s67.4 150.2 150.2 150.2c94.2 0 135.3-63.5 140.8-95.2H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path></svg>}
             Sign in with Google
           </Button>
           <div className="mt-6 text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link href="#" className="underline text-primary hover:text-primary/80">
+            <Link href="/signup" className="underline text-primary hover:text-primary/80">
               Sign up
             </Link>
           </div>
