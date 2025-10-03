@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Studio": {
@@ -6,10 +7,6 @@
       "type": "object",
       "description": "Represents a studio using the SaaS platform.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the studio."
-        },
         "name": {
           "type": "string",
           "description": "Name of the studio."
@@ -43,7 +40,6 @@
         }
       },
       "required": [
-        "id",
         "name",
         "email",
         "createdAt"
@@ -55,14 +51,6 @@
       "type": "object",
       "description": "Represents an event created by a studio for photo matching.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the event."
-        },
-        "studioId": {
-          "type": "string",
-          "description": "Reference to Studio. (Relationship: Studio 1:N Event)"
-        },
         "folderId": {
           "type": "string",
           "description": "Google Drive folder ID associated with the event."
@@ -106,73 +94,17 @@
         }
       },
       "required": [
-        "id",
-        "studioId",
         "folderId",
         "createdAt",
         "status"
-      ]
-    },
-    "Payment": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Payment",
-      "type": "object",
-      "description": "Represents a payment made by a studio.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the payment."
-        },
-        "studioId": {
-          "type": "string",
-          "description": "Reference to Studio. (Relationship: Studio 1:N Payment)"
-        },
-        "eventId": {
-          "type": "string",
-          "description": "Reference to Event. (Relationship: Event 1:N Payment) (Optional, if payment is for a subscription)"
-        },
-        "amount": {
-          "type": "number",
-          "description": "Amount paid."
-        },
-        "currency": {
-          "type": "string",
-          "description": "Currency of the payment (e.g., USD)."
-        },
-        "type": {
-          "type": "string",
-          "description": "Type of payment (e.g., event, subscription)."
-        },
-        "stripeId": {
-          "type": "string",
-          "description": "Stripe payment ID."
-        },
-        "status": {
-          "type": "string",
-          "description": "Status of the payment (e.g., succeeded, failed)."
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp of when the payment was recorded.",
-          "format": "date-time"
-        }
-      },
-      "required": [
-        "id",
-        "studioId",
-        "amount",
-        "currency",
-        "type",
-        "stripeId",
-        "status",
-        "createdAt"
       ]
     }
   },
   "auth": {
     "providers": [
       "password",
-      "anonymous"
+      "anonymous",
+      "google.com"
     ]
   },
   "firestore": {
@@ -180,56 +112,21 @@
       {
         "path": "/studios/{studioId}",
         "definition": {
-          "entityName": "Studio",
           "schema": {
-            "$ref": "#/backend/entities/Studio"
+            "$ref": "#/entities/Studio"
           },
-          "description": "Stores studio profile information. Includes billing details and subscription status.",
-          "params": [
-            {
-              "name": "studioId",
-              "description": "Unique identifier for the studio."
-            }
-          ]
+          "description": "Stores studio profile information. Includes billing details and subscription status."
         }
       },
       {
         "path": "/studios/{studioId}/events/{eventId}",
         "definition": {
-          "entityName": "Event",
           "schema": {
-            "$ref": "#/backend/entities/Event"
+            "$ref": "#/entities/Event"
           },
-          "description": "Stores event-specific data. Events are owned by studio.",
-          "params": [
-            {
-              "name": "studioId",
-              "description": "Unique identifier for the studio."
-            },
-            {
-              "name": "eventId",
-              "description": "Unique identifier for the event."
-            }
-          ]
-        }
-      },
-      {
-        "path": "/payments/{paymentId}",
-        "definition": {
-          "entityName": "Payment",
-          "schema": {
-            "$ref": "#/backend/entities/Payment"
-          },
-          "description": "Stores payment information. Access controlled via studioId.",
-          "params": [
-            {
-              "name": "paymentId",
-              "description": "Unique identifier for the payment."
-            }
-          ]
+          "description": "Stores event-specific data. Events are owned by studio."
         }
       }
-    ],
-    "reasoning": "The Firestore structure is designed to ensure authorization independence, clarity, and scalability for the SaaS Photo Matcher application.  It leverages path-based ownership for studio-owned data and segregation to enforce a homogeneous security posture.\n\n**Authorization Independence:**\n*   The structure avoids `get()` calls in security rules by using path-based ownership (`/studios/{studioId}/events/{eventId}`).  A studio can only access events within its own path.\n\n**QAPs (Rules are not Filters):**\n*   The structure is designed to make listing operations secure. Listing events under a studio is secure because the rules only allow listing events under the authenticated studio's path.\n\n**Explanation of Paths:**\n*   `/studios/{studioId}`: Stores studio profile information.  This includes billing details and subscription status.\n*   `/studios/{studioId}/events/{eventId}`: Stores event-specific data, such as the linked Google Drive folder, indexing status, and QR code information.  Since events are subcollections of studios, access is implicitly controlled by studio ownership.\n*   `/payments/{paymentId}`:  This collection stores all payment records. Security is enforced by verifying that the `studioId` matches the authenticated user's studio ID in rules. While not a subcollection of studios, access is strictly controlled through the `studioId` field and appropriate security rules.\n\nThis design promotes a clear separation of concerns and simplifies security rules, making the application more robust and easier to maintain."
+    ]
   }
 }
