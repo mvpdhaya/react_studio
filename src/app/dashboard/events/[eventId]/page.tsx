@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -8,8 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Suspense } from 'react';
 
-function EventDetailComponent({ params }: { params: { eventId: string } }) {
-  const { eventId } = params;
+function EventDetailComponent({ eventId }: { eventId: string }) {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
@@ -110,7 +110,7 @@ function EventDetailComponent({ params }: { params: { eventId: string } }) {
 export default function EventDetailPage({ params }: { params: { eventId: string } }) {
     return (
         <Suspense fallback={<div>Loading event details...</div>}>
-            <EventDetailComponent params={params} />
+            <EventDetailComponent eventId={params.eventId} />
         </Suspense>
     )
 }
