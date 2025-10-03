@@ -6,8 +6,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <div className="flex-none">
-           <Link href="/" className="mr-6">
+        <div className="mr-4 flex items-center">
+          <Link href="/" className="flex items-center gap-2">
             <Logo />
           </Link>
         </div>
@@ -31,7 +31,7 @@ export function Header() {
             About
           </Link>
         </nav>
-        <div className="flex flex-none items-center justify-end gap-4">
+        <div className="flex items-center justify-end gap-2">
           <Button variant="ghost" asChild>
             <Link href="/login">Log In</Link>
           </Button>
