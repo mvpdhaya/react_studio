@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { findPhotos } from '@/ai/flows/client-upload-selfie-find-photos';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,6 +17,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -33,7 +33,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!file || !preview) {
+    if (!file) {
       toast({
         variant: 'destructive',
         title: 'No file selected',
@@ -44,22 +44,27 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
 
     setIsLoading(true);
 
-    try {
-      // The Genkit flow is called here.
-      // For this demo, we mock the result to avoid needing API keys.
-      // const result = await findPhotos({
-      //   selfieDataUri: preview,
-      //   eventId: params.eventId,
-      // });
-      
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      const mockResult = {
-        fileIds: ['event-photo-1', 'event-photo-2', 'event-photo-4'].slice(0, Math.floor(Math.random() * 2) + 1)
-      };
+    const formData = new FormData();
+    formData.append('event_id', params.eventId);
+    formData.append('selfie', file);
 
-      if (mockResult.fileIds && mockResult.fileIds.length > 0) {
+    try {
+      const response = await fetch(`${backendApiUrl}/process_selfie`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to process selfie');
+      }
+
+      const result = await response.json();
+      const fileIds = result.matches.map((match: any) => match.file_id);
+
+      if (fileIds && fileIds.length > 0) {
         const query = new URLSearchParams({
-          photos: mockResult.fileIds.join(','),
+          photos: fileIds.join(','),
         }).toString();
         router.push(`/client/${params.eventId}/results?${query}`);
       } else {
@@ -69,12 +74,12 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
         });
         setIsLoading(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error finding photos:', error);
       toast({
         variant: 'destructive',
         title: 'Something went wrong',
-        description: 'There was an error processing your photo. Please try again.',
+        description: error.message || 'There was an error processing your photo. Please try again.',
       });
       setIsLoading(false);
     }

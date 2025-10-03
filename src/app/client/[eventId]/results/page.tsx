@@ -12,10 +12,12 @@ import { Suspense } from 'react';
 function ResultsComponent({ eventId }: { eventId: string }) {
   const searchParams = useSearchParams();
   const photoIds = searchParams.get('photos')?.split(',') || [];
+  const backendApiUrl = process.env.NEXT_PUBLIC_BACKEND_API_URL;
   
+  // We keep the placeholder matching logic for now, but use your backend to serve images.
   const matchedPhotos = PlaceHolderImages.filter(img => photoIds.includes(img.id));
 
-  if (matchedPhotos.length === 0) {
+  if (photoIds.length === 0) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4 text-center">
         <Camera className="h-16 w-16 text-muted-foreground mb-4" />
@@ -34,25 +36,26 @@ function ResultsComponent({ eventId }: { eventId: string }) {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight font-headline">We Found Your Photos!</h1>
-                <p className="text-muted-foreground">Here are the {matchedPhotos.length} photos we found for you.</p>
+                <p className="text-muted-foreground">Here are the {photoIds.length} photos we found for you.</p>
             </div>
             <Button size="lg" variant="accent">
                 <Download className="mr-2 h-4 w-4" />
-                Download All ({matchedPhotos.length})
+                Download All ({photoIds.length})
             </Button>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {matchedPhotos.map((image, index) => (
+          {photoIds.map((fileId, index) => (
             <Card key={index} className="overflow-hidden group">
               <CardContent className="p-0 relative">
                  <Image
-                    src={image.imageUrl}
-                    alt={image.description}
-                    data-ai-hint={image.imageHint}
+                    src={`${backendApiUrl}/image/${fileId}`}
+                    alt={`Matched photo ${index + 1}`}
+                    data-ai-hint="event photo"
                     width={600}
                     height={400}
                     className="aspect-[3/2] w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
+                    unoptimized
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button variant="secondary" size="sm" className="w-full">
@@ -81,4 +84,3 @@ export default function ResultsPage({ params }: { params: { eventId: string } })
         </Suspense>
     );
 }
-
