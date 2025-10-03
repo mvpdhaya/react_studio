@@ -128,14 +128,6 @@ export default function Home() {
                         />
                     </div>
                      <div className="grid gap-10 md:grid-cols-2 md:items-center">
-                        <Image
-                            src="https://picsum.photos/seed/feature3/800/600"
-                            alt="Find with AI"
-                            data-ai-hint="woman phone selfie"
-                            width={800}
-                            height={600}
-                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover shadow-2xl"
-                        />
                         <div className="space-y-4">
                             <div className="flex items-center gap-4">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-xl">3</div>
@@ -145,6 +137,14 @@ export default function Home() {
                             Clients upload a selfie, and our AI instantly finds and displays all their photos from the event for easy viewing and downloading.
                             </p>
                         </div>
+                        <Image
+                            src="https://picsum.photos/seed/feature3/800/600"
+                            alt="Find with AI"
+                            data-ai-hint="woman phone selfie"
+                            width={800}
+                            height={600}
+                            className="mx-auto aspect-video overflow-hidden rounded-xl object-cover shadow-2xl"
+                        />
                     </div>
                 </div>
             </div>
