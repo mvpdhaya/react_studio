@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -25,7 +26,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (!isUserLoading && user) {
-      router.push('/dashboard');
+      router.push('/subscribe');
     }
   }, [user, isUserLoading, router]);
 
@@ -35,7 +36,7 @@ export default function SignUpPage() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       toast({ title: 'Account Created!', description: 'Welcome to StudioMatch.' });
-      router.push('/dashboard');
+      router.push('/subscribe');
     } catch (error: any) {
       toast({
         variant: 'destructive',

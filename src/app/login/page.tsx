@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -26,7 +27,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!isUserLoading && user) {
-      router.push('/dashboard');
+      router.push('/subscribe');
     }
   }, [user, isUserLoading, router]);
 
@@ -36,7 +37,7 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast({ title: 'Login Successful', description: "Welcome back!" });
-      router.push('/dashboard');
+      router.push('/subscribe');
     } catch (error: any) {
       toast({
         variant: 'destructive',
@@ -54,7 +55,7 @@ export default function LoginPage() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       toast({ title: 'Login Successful', description: "Welcome!" });
-      router.push('/dashboard');
+      router.push('/subscribe');
     } catch (error: any) {
       toast({
         variant: 'destructive',
