@@ -44,7 +44,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col gap-4 min-[400px]:flex-row">
                   <Button asChild size="lg">
-                    <Link href="/login">Get Started for Free</Link>
+                    <Link href="/dashboard">Get Started for Free</Link>
                   </Button>
                    <Button asChild size="lg" variant="outline">
                     <Link href="#features">Learn More</Link>
@@ -190,7 +190,7 @@ export default function Home() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild className="w-full" variant="outline">
-                    <Link href="/login">Get Started</Link>
+                    <Link href="/dashboard">Get Started</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -228,7 +228,7 @@ export default function Home() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild className="w-full">
-                    <Link href="/login">Choose Plan</Link>
+                    <Link href="/dashboard">Choose Plan</Link>
                   </Button>
                 </CardFooter>
               </Card>

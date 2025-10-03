@@ -36,7 +36,7 @@ export function Header() {
             <Link href="/login">Log In</Link>
           </Button>
           <Button asChild>
-            <Link href="/login">Get Started</Link>
+            <Link href="/dashboard">Get Started</Link>
           </Button>
         </div>
 
@@ -64,7 +64,7 @@ export function Header() {
                         </nav>
                         <div className="mt-8 flex flex-col gap-4">
                             <Button variant="ghost" asChild><Link href="/login">Log In</Link></Button>
-                            <Button asChild><Link href="/login">Get Started</Link></Button>
+                            <Button asChild><Link href="/dashboard">Get Started</Link></Button>
                         </div>
                     </div>
                 </SheetContent>
