@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSearchParams, useParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 
 function EventDetailComponent() {
   const params = useParams();
@@ -15,12 +15,23 @@ function EventDetailComponent() {
   const searchParams = useSearchParams();
   const { toast } = useToast();
   
+  const [clientUrl, setClientUrl] = useState('');
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
+
   // The backend doesn't store the event name, so we pass it from the create page.
   const eventName = searchParams.get('name') || `Event ${eventId}`;
-  const clientUrl = `${window.location.origin}/client/${eventId}`;
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(clientUrl)}&color=008080&bgcolor=F0F0F0`;
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const url = `${window.location.origin}/client/${eventId}`;
+      setClientUrl(url);
+      setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=008080&bgcolor=F0F0F0`);
+    }
+  }, [eventId]);
+
 
   const handleCopy = async (textToCopy: string) => {
+    if (!textToCopy) return;
     try {
       await navigator.clipboard.writeText(textToCopy);
       toast({
@@ -36,6 +47,7 @@ function EventDetailComponent() {
   };
 
   const handleDownloadQR = () => {
+    if (!qrCodeUrl) return;
     const link = document.createElement('a');
     link.href = qrCodeUrl;
     link.download = `studiomatch-qr-${eventId}.png`;
@@ -83,21 +95,25 @@ function EventDetailComponent() {
             <CardDescription>Clients can scan this QR code to find their photos.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-4">
-            <div className="p-4 bg-white rounded-lg border">
-                <Image
-                src={qrCodeUrl}
-                alt="Event QR Code"
-                width={200}
-                height={200}
-                unoptimized
-                />
-            </div>
+            {qrCodeUrl ? (
+              <div className="p-4 bg-white rounded-lg border">
+                  <Image
+                  src={qrCodeUrl}
+                  alt="Event QR Code"
+                  width={200}
+                  height={200}
+                  unoptimized
+                  />
+              </div>
+            ) : (
+                <div className="w-[200px] h-[200px] bg-muted rounded-lg animate-pulse" />
+            )}
             <div className="flex gap-2">
-                 <Button variant="outline" size="sm" onClick={() => handleCopy(clientUrl)}>
+                 <Button variant="outline" size="sm" onClick={() => handleCopy(clientUrl)} disabled={!clientUrl}>
                     <Copy className="mr-2 h-4 w-4" />
                     Copy Link
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleDownloadQR}>
+                <Button variant="outline" size="sm" onClick={handleDownloadQR} disabled={!qrCodeUrl}>
                     <Download className="mr-2 h-4 w-4" />
                     Download QR
                 </Button>
