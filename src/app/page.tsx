@@ -15,10 +15,10 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-card">
+        <section className="w-full py-20 md:py-32 lg:py-40 xl:py-56 bg-card">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
-              <div className="flex flex-col justify-center space-y-4">
+            <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
+              <div className="flex flex-col justify-center space-y-6">
                 <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none font-headline text-primary">
                   Never lose a memory.
                 </h1>
@@ -44,10 +44,10 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="features" className="w-full py-20 md:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Key Features</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl font-headline">How It Works</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -55,8 +55,8 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-start gap-12 py-12 lg:grid-cols-3">
-              <div className="grid gap-1 text-center">
+            <div className="mx-auto grid max-w-5xl items-start gap-12 py-16 lg:grid-cols-3">
+              <div className="grid gap-2 text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
                   <Camera className="h-8 w-8" />
                 </div>
@@ -65,7 +65,7 @@ export default function Home() {
                   Studios connect their Google Drive, select a folder of event photos, and generate a unique event page.
                 </p>
               </div>
-              <div className="grid gap-1 text-center">
+              <div className="grid gap-2 text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
                   <QrCode className="h-8 w-8" />
                 </div>
@@ -74,7 +74,7 @@ export default function Home() {
                   Clients access the event page by scanning a simple QR code provided by the studio. No apps, no logins.
                 </p>
               </div>
-              <div className="grid gap-1 text-center">
+              <div className="grid gap-2 text-center">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground mb-4">
                   <Sparkles className="h-8 w-8" />
                 </div>
@@ -88,8 +88,8 @@ export default function Home() {
         </section>
 
         {/* Portfolio Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-card">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
+        <section className="w-full py-20 md:py-32 bg-card">
+          <div className="container grid items-center justify-center gap-6 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">Our Work</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -116,12 +116,12 @@ export default function Home() {
         </section>
 
         {/* About Section */}
-        <section id="about" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="about" className="w-full py-20 md:py-32">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-10 lg:grid-cols-2">
-              <div>
+            <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="space-y-4">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight font-headline">About StudioMatch</h2>
-                <p className="mt-4 text-muted-foreground">
+                <p className="text-muted-foreground">
                   StudioMatch was born from a simple idea: finding your photos should be as joyful as the moment they were taken. For too long, clients have had to scroll through endless galleries, and studios have spent hours searching for specific shots.
                 </p>
                 <p className="mt-4 text-muted-foreground">
