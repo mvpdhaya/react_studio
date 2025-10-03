@@ -6,27 +6,27 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 items-center">
-        <div className="mr-4 hidden md:flex">
+        <div className="flex-1">
           <Link href="/">
             <Logo />
           </Link>
         </div>
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="flex flex-1 items-center justify-center gap-6 text-sm">
           <Link
             href="/#features"
-            className="transition-colors hover:text-foreground/80 text-foreground/60"
+            className="hidden sm:inline-block transition-colors hover:text-foreground/80 text-foreground/60"
           >
             Features
           </Link>
           <Link
             href="/#pricing"
-            className="transition-colors hover:text-foreground/80 text-foreground/60"
+            className="hidden sm:inline-block transition-colors hover:text-foreground/80 text-foreground/60"
           >
             Pricing
           </Link>
           <Link
             href="/#about"
-            className="transition-colors hover:text-foreground/80 text-foreground/60"
+            className="hidden sm:inline-block transition-colors hover:text-foreground/80 text-foreground/60"
           >
             About
           </Link>
