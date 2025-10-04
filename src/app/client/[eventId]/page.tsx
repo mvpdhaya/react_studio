@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { findPhotos } from '@/ai/flows/client-upload-selfie-find-photos';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,7 +31,7 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!preview) {
+    if (!file) {
       toast({
         variant: 'destructive',
         title: 'No file selected',
@@ -44,14 +43,25 @@ export default function ClientUploadPage({ params }: { params: { eventId: string
     setIsLoading(true);
 
     try {
-      const result = await findPhotos({
-        selfieDataUri: preview,
-        eventId: params.eventId,
+      const formData = new FormData();
+      formData.append('event_id', params.eventId);
+      formData.append('selfie', file);
+
+      const response = await fetch('/api/process_selfie', {
+          method: 'POST',
+          body: formData,
       });
 
-      const fileIds = result.fileIds;
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Failed to process selfie.');
+      }
+      
+      const result = await response.json();
+      const matches = result.matches;
 
-      if (fileIds && fileIds.length > 0) {
+      if (matches && matches.length > 0) {
+        const fileIds = matches.map((match: any) => match.file_id);
         const query = new URLSearchParams({
           photos: fileIds.join(','),
         }).toString();

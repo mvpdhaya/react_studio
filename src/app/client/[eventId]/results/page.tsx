@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, Camera, ShieldX, ArrowLeft } from 'lucide-react';
+import { Download, Camera, ShieldX, ArrowLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { Logo } from '@/components/logo';
@@ -34,7 +34,8 @@ function ResultsComponent({ eventId }: { eventId: string }) {
 
   // This should be replaced with a real API call to fetch image URLs
   const getImageUrl = (fileId: string) => {
-    return `https://picsum.photos/seed/${fileId}/600/400`;
+    // Point to the FastAPI backend image endpoint
+    return `/api/image/${fileId}`;
   }
 
   return (
@@ -74,6 +75,7 @@ function ResultsComponent({ eventId }: { eventId: string }) {
                     width={600}
                     height={400}
                     className="aspect-[3/2] w-full object-cover"
+                    unoptimized // Important for external images served via proxy
                   />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <Button variant="secondary" size="sm">

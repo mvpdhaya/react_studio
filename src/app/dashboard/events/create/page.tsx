@@ -36,6 +36,37 @@ function CreateEventFormComponent() {
   const [isCreating, setIsCreating] = useState(false);
   const [progress, setProgress] = useState(0);
 
+  const fetchFolders = async () => {
+    setIsFetchingFolders(true);
+    try {
+      const response = await fetch('/api/list_folders');
+      if (!response.ok) {
+        if (response.status === 401) {
+          // This means the session is invalid or expired, prompt to connect again.
+          setIsDriveConnected(false);
+          setStep(1);
+           toast({
+            variant: 'destructive',
+            title: 'Authentication expired',
+            description: 'Please connect to Google Drive again.',
+          });
+          return;
+        }
+        throw new Error('Failed to fetch folders');
+      }
+      const data = await response.json();
+      setFolders(data.folders || []);
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Error fetching folders',
+        description: error.message || 'Could not retrieve folders from Google Drive.',
+      });
+    } finally {
+      setIsFetchingFolders(false);
+    }
+  };
+
   useEffect(() => {
     const connected = searchParams.get('connected');
     if (connected === 'true') {
@@ -51,23 +82,26 @@ function CreateEventFormComponent() {
 
   const handleConnectDrive = async () => {
     setIsConnecting(true);
-    // Simulate API call
-    setTimeout(() => {
-        router.replace('/dashboard/events/create?connected=true');
-    }, 1000);
-  };
-
-  const fetchFolders = async () => {
-    setIsFetchingFolders(true);
-    // Simulate API call
-    setTimeout(() => {
-      setFolders([
-          {id: 'folder1', name: 'Johnson Wedding - May 2024'},
-          {id: 'folder2', name: 'Acme Corp Conference'},
-          {id: 'folder3', name: 'City Marathon 2024'},
-      ]);
-      setIsFetchingFolders(false);
-    }, 1500);
+    try {
+        const response = await fetch('/api/auth');
+        if (!response.ok) {
+            throw new Error('Failed to get authentication URL from server.');
+        }
+        const data = await response.json();
+        if (data.auth_url) {
+            // Redirect to Google's auth URL
+            window.location.href = data.auth_url;
+        } else {
+            throw new Error('No authentication URL returned.');
+        }
+    } catch (error: any) {
+        toast({
+            variant: 'destructive',
+            title: 'Connection Failed',
+            description: error.message || 'Could not initiate connection with Google Drive.',
+        });
+        setIsConnecting(false);
+    }
   };
 
   const handleCreateEvent = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,25 +116,55 @@ function CreateEventFormComponent() {
     }
     
     setIsCreating(true);
-    setStep(3); // Move to progress step
+    setStep(3);
 
-    // Simulate event creation and indexing progress
-    const interval = setInterval(() => {
-        setProgress(prev => {
-            if (prev >= 100) {
-                clearInterval(interval);
-                setTimeout(() => {
-                    toast({
-                        title: 'Event Created!',
-                        description: 'Your event is now active and ready to be shared.',
-                    });
-                    router.push(`/dashboard/events/evt-new?name=${encodeURIComponent(eventName)}`);
-                }, 500);
-                return 100;
-            }
-            return prev + 10;
-        })
-    }, 200);
+    // Simulate creation progress on the frontend
+    const progressInterval = setInterval(() => {
+        setProgress(prev => Math.min(prev + 5, 95)); // Simulate progress
+    }, 500);
+
+
+    try {
+        const formData = new FormData();
+        formData.append('folder_id', selectedFolder);
+        // Although the backend doesn't use eventName, we keep it for frontend routing
+        
+        const response = await fetch('/api/create_event', {
+            method: 'POST',
+            body: formData,
+        });
+
+        clearInterval(progressInterval);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Failed to create event');
+        }
+
+        const result = await response.json();
+        const newEventId = result.event_id;
+
+        setProgress(100);
+        toast({
+            title: 'Event Created!',
+            description: result.message || 'Your event is now active and ready to be shared.',
+        });
+
+        setTimeout(() => {
+            router.push(`/dashboard/events/${newEventId}?name=${encodeURIComponent(eventName)}`);
+        }, 500);
+
+    } catch (error: any) {
+        clearInterval(progressInterval);
+        setIsCreating(false);
+        setStep(2); // Go back to the form step on error
+        setProgress(0);
+        toast({
+            variant: 'destructive',
+            title: 'Event Creation Failed',
+            description: error.message,
+        });
+    }
   };
   
   if (step === 3) {
@@ -181,9 +245,9 @@ function CreateEventFormComponent() {
                             <Loader2 className="animate-spin text-muted-foreground" /> 
                         </div>
                     ) : (
-                        <Select required onValueChange={setSelectedFolder} value={selectedFolder} disabled={isLoading || step < 2}>
+                        <Select required onValueChange={setSelectedFolder} value={selectedFolder} disabled={isLoading || step < 2 || folders.length === 0}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select a folder" />
+                                <SelectValue placeholder={folders.length > 0 ? "Select a folder" : "No folders found"} />
                             </SelectTrigger>
                             <SelectContent>
                                 {folders.map((folder) => (
